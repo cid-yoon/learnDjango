@@ -1,41 +1,36 @@
-from django.http import HttpResponse, HttpResponseRedirect
+import django.http
 from django.shortcuts import get_object_or_404, render
-from django.template import loader
 from django.urls import reverse
+from django.views import generic
 
-from polls.models import Question
 from .models import Question, Choice
 
 
 # Create your views here.
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
 
-def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-
-    # 최소 5개 의 투표 질문이 콤마로 분리되어 발행일에 따라 출력
-
-    template = loader.get_template('polls/index.html')
-    context = {
-        'latest_question_list': latest_question_list,
-    }
-    return HttpResponse(template.render(context, request))
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
 
 
-def detail(request, question_id):
-    return HttpResponse("You're looking at question %s" % question_id)
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
 
 
-# 리다이렉트 된 데이터 반환
-def results(request, question_id):
-    question: Question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/result.html', {'question': question})
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
         # 전송된 자료에 접근,
-        selected_choice = question.choice_set.get(pk=request.POST['post'])
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # 데이터가 없는 경우 key error, 다시 해당 화면 보여주기
         return render(request, 'polls/detail.html', {
@@ -45,7 +40,7 @@ def vote(request, question_id):
 
         # 투표 수 증가 후 저장. 성공 시 해당 경로로 이동하여 결과 보여주기
         # 사용자가 재 전송할 url을 전달, 데이터 처리 성공시에는 항상 redirect를(웹 권장)
-        selected_choice.vote += 1
-        selected_choice.choice.save()
+        selected_choice.votes += 1
+        selected_choice.save()
 
-    return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    return django.http.HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
