@@ -26,6 +26,8 @@ class QuestionAdmin(admin.ModelAdmin):
     # 필드 표시를 위한 값, ORM의 메소드 결과도 바로 사용 가능..
     # 오졌다..
     list_display = ('question_text', 'pub_date', 'was_published_recently')
+    list_filter = ['pub_date']
+    search_fields = ['question_text']
 
 
 admin.site.register(Question, QuestionAdmin)
