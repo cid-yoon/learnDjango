@@ -1,10 +1,15 @@
 from django.http import HttpResponse
+from .models import Question
 
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse("hello world. you are at the polls index")
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+
+    # 최소 5개 의 투표 질문이 콤마로 분리되어 발행일에 따라 출력
+    output = ', '.join([q.question_text for q in latest_question_list])
+    return HttpResponse(output)
 
 
 def detail(request, question_id):
