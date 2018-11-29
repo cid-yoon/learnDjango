@@ -1,0 +1,41 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>seed. blog</title>
+</head>
+<body>
+    <div>
+        <h1>
+            <a href="">Django Girls Blog</a>
+
+        </h1>
+    </div>
+    <a>
+        {% for post in posts %}
+            <div>
+            <p>published: {{ post.published_date }}</p>
+                <h2><a href="">{{ post.title }}</a> </h2>
+                <p>{{ post.text|linebreaks }}</p>
+            </div>
+
+        {% endfor %}
+    </a>
+<div>
+    <div>
+        <p>published: 14.06.2014, 12:14</p>
+        <h2><a href="">My first post</a> </h2>
+        <p>Anean eu leo quem...</p>
+    </div>
+
+    <div>
+        <p>published: 14.16.2014, 12:16</p>
+        <h2><a href="">My second post</a> </h2>
+        <p>Anean.. again...</p>
+    </div>
+
+</div>
+</body>
+</html>
