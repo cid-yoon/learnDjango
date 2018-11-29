@@ -9,4 +9,7 @@ urlpatterns = [
     # /blog/
     path('', views.post_list, name='post_list'),
 
+    # /blog/post_detail/<int:pk>
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
+
 ]
