@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from blog.forms import PostForm
@@ -17,5 +17,18 @@ def post_detail(request, pk):
 
 
 def post_new(request):
-    form = PostForm()
+    # post 메시지 검사, form이 유효한지 체크 후 저장
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            # 넘겨진 데이터를 바로 저장하지 않게 하는 것, 작성자 데이터 추가가 필요하니.
+            # 대부분의 경우에는 True,
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('blog:post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+
     return render(request, 'blog/post_edit.html', {'form': form})
