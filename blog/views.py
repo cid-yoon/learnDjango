@@ -25,7 +25,6 @@ def post_new(request):
             # 대부분의 경우에는 True,
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
             post.save()
             return redirect('blog:post_detail', pk=post.pk)
     else:
@@ -46,7 +45,6 @@ def post_edit(request, pk):
             # 대부분의 경우에는 True,
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
             post.save()
             return redirect('blog:post_detail', pk=post.pk)
     else:
@@ -64,3 +62,9 @@ def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
     return redirect('blog:post_detail', pk)
+
+
+def post_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('blog:post_list')

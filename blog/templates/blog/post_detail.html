@@ -18,5 +18,8 @@
 
         <h1>{{ post.title }}</h1>
         <p>{{ post.text | linebreaksbr }}</p>
+        <a class="btn btn-default" href="{% url 'blog:post_remove' pk=post.pk %}">
+            <span class="glyphicon glyphicon-remove"></span>
+        </a>
     </div>
 {% endblock %}
