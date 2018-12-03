@@ -12,6 +12,8 @@
                 {% endif %}
             </a>
             </div>
+        {% else %}
+            <a class="btn btn-default" href="{% url 'blog:post_publish' pk=post.pk %}">Publish</a>
         {% endif %}
 
         <h1>{{ post.title }}</h1>
