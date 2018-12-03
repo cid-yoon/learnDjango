@@ -32,3 +32,24 @@ def post_new(request):
         form = PostForm()
 
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+# url로부터 매개 변수 받음
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+
+        # form 데이터를
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            # 넘겨진 데이터를 바로 저장하지 않게 하는 것, 작성자 데이터 추가가 필요하니.
+            # 대부분의 경우에는 True,
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('blog:post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'blog/post_edit.html', {'form': form})

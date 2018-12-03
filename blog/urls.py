@@ -14,4 +14,7 @@ urlpatterns = [
     # /blog/post/new/
     path('post/new/', views.post_new, name='post_new'),
 
+    # /blog/post/edit/
+    path('post/edit/<int:pk>', views.post_edit, name='post_edit'),
+
 ]
