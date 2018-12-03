@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -16,6 +17,7 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': detailPost})
 
 
+@login_required
 def post_new(request):
     # post 메시지 검사, form이 유효한지 체크 후 저장
     if request.method == "POST":
