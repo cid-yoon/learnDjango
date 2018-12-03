@@ -1,6 +1,5 @@
 from django.urls import path
 
-
 from . import views
 
 # 어플리케이션의 이름 공간 나누기
@@ -11,5 +10,8 @@ urlpatterns = [
 
     # /blog/post_detail/<int:pk>
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
+
+    # /blog/post/new/
+    path('post/new/', views.post_new, name='post_new'),
 
 ]
