@@ -24,6 +24,9 @@ SECRET_KEY = 'hxhr-83o)1ck@%1y!uy2#+dytzq=2d1rl^7iyqlnbj)a(*nv^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    INTERNAL_IPS = ('127.0.0.1', 'localhost',)
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -37,15 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
 
+    'django.contrib.staticfiles',
     'debug_toolbar',
+
     'django_extensions'
 
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
